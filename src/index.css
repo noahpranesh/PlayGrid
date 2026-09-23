@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 100% 2.9%;
+    --foreground: 221 100% 95.1%;
+    --card: 224 57% 9%;
+    --card-foreground: 221 100% 95.1%;
+    --popover: 224 57% 9%;
+    --popover-foreground: 221 100% 95.1%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 213 27% 70%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
+    --ring: 217 91% 60%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.75rem;
+    --font-heading: ui-sans-serif, system-ui, sans-serif;
+    --font-body: ui-sans-serif, system-ui, sans-serif;
+    --font-display: ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    /* PlayGrid palette */
+    --pg-bg: #00050F;
+    --pg-surface: #0A1124;
+    --pg-surface2: #0F1A33;
+    --pg-border: #1B2A4A;
+    --pg-accent: #3B82F6;
+    --pg-accent2: #60A5FA;
+    --pg-text: #E6EEFF;
+    --pg-muted: #8AA0C8;
+  }
+
+  .dark {
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+    --card: 222 40% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 40% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 213 27% 70%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html, body, #root {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(59,130,246,0.12), transparent 60%),
+      radial-gradient(900px 500px at 10% 110%, rgba(59,130,246,0.08), transparent 60%),
+      var(--pg-bg);
+    color: var(--pg-text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .pg-glow {
+    box-shadow: 0 0 0 1px rgba(59,130,246,0.25), 0 8px 30px rgba(59,130,246,0.15);
+  }
+  .pg-text-glow {
+    text-shadow: 0 0 18px rgba(59,130,246,0.55);
+  }
+  .pg-surface {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)) , var(--pg-surface);
+    border: 1px solid var(--pg-border);
+  }
+  .pg-no-anim * {
+    animation: none !important;
+    transition: none !important;
+  }
+  .pg-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+  .pg-scroll::-webkit-scrollbar-track { background: transparent; }
+  .pg-scroll::-webkit-scrollbar-thumb { background: #1B2A4A; border-radius: 8px; }
+  .pg-scroll::-webkit-scrollbar-thumb:hover { background: #2a3f66; }
+}
+
+@keyframes pg-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.pg-fade-up { animation: pg-fade-up 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes pg-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.pg-pulse { animation: pg-pulse 2.4s ease-in-out infinite; }
+
+@keyframes pg-rainbow-bg {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.pg-rainbow {
+  background-image: linear-gradient(90deg, #ff004c, #ff9d00, #fff200, #00e5ff, #7b2bff, #22d94c, #ff004c);
+  background-size: 200% 100%;
+  animation: pg-rainbow-bg 2s linear infinite;
+}
