@@ -37,6 +37,10 @@ export async function signUpWithUsername({ username, password, email }) {
     throw new Error('Password must be at least 6 characters.');
   }
 
+  if (!(await isUsernameAvailable(username))) {
+    throw new Error('That username is taken — try another one.');
+  }
+
   const authEmail = email && email.trim() ? email.trim() : usernameToFakeEmail(username);
 
   const { data, error } = await supabase.auth.signUp({
@@ -52,6 +56,9 @@ export async function signUpWithUsername({ username, password, email }) {
   if (error) {
     if (/already registered|already exists/i.test(error.message)) {
       throw new Error('That username or email is already taken.');
+    }
+    if (/database error saving new user/i.test(error.message)) {
+      throw new Error('That username is taken — try another one.');
     }
     throw error;
   }
@@ -105,5 +112,27 @@ export async function getCurrentProfile() {
   const user = await getCurrentUser();
   if (!user) return null;
   const { data } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle();
+  return data;
+}
+
+/** True if nobody (case-insensitive) has this username yet. */
+export async function isUsernameAvailable(username) {
+  const { data, error } = await supabase.rpc('username_available', { p_username: username });
+  if (error) return true; // don't block signup on a lookup hiccup; the DB still enforces uniqueness
+  return Boolean(data);
+}
+
+/** Change the signed-in player's username (also updates their leaderboard + forum name). */
+export async function changeUsername(newUsername) {
+  const name = (newUsername || '').trim();
+  if (!isValidUsername(name)) {
+    throw new Error('Username must be 3-20 characters (letters, numbers, underscore only).');
+  }
+  const { data, error } = await supabase.rpc('set_username', { p_username: name });
+  if (error) {
+    if (/taken|duplicate|unique/i.test(error.message)) throw new Error('That username is taken — try another one.');
+    throw new Error(error.message);
+  }
+  await supabase.auth.updateUser({ data: { username: name } });
   return data;
 }

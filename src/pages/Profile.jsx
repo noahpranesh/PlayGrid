@@ -2,6 +2,7 @@ import { Trophy, Gamepad2, Clock, Star, Zap, Lock } from 'lucide-react';
 import { games } from '@/games/registry';
 import { useGameStore, getLevelProgress, getLevel } from '@/lib/gameStore';
 import { ACHIEVEMENTS } from '@/lib/achievements';
+import UsernameEditor from '@/components/UsernameEditor';
 
 function fmtTime(ms) {
   const s = Math.floor(ms / 1000);
@@ -37,6 +38,7 @@ export default function Profile() {
           </div>
           <div className="flex-1 w-full">
             <h1 className="font-display text-2xl font-extrabold">Player Profile</h1>
+            <div className="my-1"><UsernameEditor /></div>
             <p className="text-[var(--pg-muted)] text-sm">PlayGrid Level {level} · {store.xp.toLocaleString()} XP</p>
             <div className="mt-3 max-w-md">
               <div className="flex justify-between text-xs text-[var(--pg-muted)] mb-1">

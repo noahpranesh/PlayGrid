@@ -62,6 +62,10 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  const refreshProfile = async () => {
+    setProfile(await getCurrentProfile());
+  };
+
   const navigateToLogin = () => {
     window.location.href = '/login';
   };
@@ -80,6 +84,7 @@ export const AuthProvider = ({ children }) => {
       appPublicSettings: null,
       authChecked,
       logout,
+      refreshProfile,
       navigateToLogin,
       checkUserAuth,
       checkAppState: checkUserAuth,

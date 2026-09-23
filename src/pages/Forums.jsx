@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { MessageSquare, Send, LogIn } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
 import { sfx } from '@/lib/sound';
+import { useAuth } from '@/lib/AuthContext';
 
 const CATEGORIES = ['General', 'Tips & Strategies', 'Bug Reports', 'Suggestions', 'Showcase'];
 
 export default function Forums() {
+  const { profile } = useAuth();
   const [posts, setPosts] = useState(null);
   const [authed, setAuthed] = useState(null);
   const [me, setMe] = useState(null);
@@ -49,7 +51,7 @@ export default function Forums() {
         body: body.trim(),
         category,
         user_id: me?.id,
-        author_name: me?.user_metadata?.username || 'Player',
+        author_name: profile?.username || me?.user_metadata?.username || 'Player',
       });
       if (insertError) throw insertError;
       setTitle('');
